@@ -1,9 +1,19 @@
+body {
+	font-family: 'Merriweather', serif;
+}
+
+button {
+	font-family: 'Merriweather', serif;
+	font-size: 14px;
+}
+
 .storage {
 	float: left;
 	margin: 5px 5px 5px 5px;
 	height: auto;
 	min-height: 1px;
 	padding: 10px 10px 10px 10px;
+	font-size: 20px;
 }
 
 #hold-buttons {
@@ -11,11 +21,11 @@
 }
 
 #hold-gifs {
-	width: 75%;
+	width: 70%;
 }
 
 #hold-input {
-	width: 19%;
+	width: 25%;
 }
 
 .gif-button {
@@ -29,4 +39,8 @@
 
 .gif-rating {
 	text-align: center;
+}
+
+#gif-input {
+	width: 200px;
 }

@@ -5,7 +5,7 @@ $( document ).ready(function() {
 	var APIKey = "tLR5a1KoLHQT6lcC95Wsi62UaPesVSiJ";
 	
 	//list of starting buttons
-	var topics = ["goat", "cat", "hamster", "dog", "frog"];
+	var topics = ["goat", "cat", "hamster", "dog", "lizard", "chipmunk", "lion"];
 
 	//storage vairable when making a button
 	var storeButton;
@@ -27,11 +27,28 @@ $( document ).ready(function() {
 	//function to make a button for a new category
 	function makeButton() {
 		for (var i = 0; i < topics.length; i++) {
+			
+			//generates new buttons and assigns attributes
 			storeInput = topics[i];
 			storeButton = $("<button>");
 			storeButton.addClass("gif-button");
 			storeButton.attr("data-name", storeInput);
 			storeButton.text(storeInput);
+
+			//pulls gifs on click
+			$(storeButton).on("click", function(event) {
+
+				//clears gif holder box of previous gifs
+				$("#hold-gifs").html("");
+
+				//stores id of button clicked
+				dataName = $(this).attr("data-name");
+
+				//runs function to pull gifs using API
+				getGifs();
+			})
+
+			//apends buttons to top of screen
 			$("#hold-buttons").append(storeButton);
 		}
 	}
@@ -39,9 +56,9 @@ $( document ).ready(function() {
 	//function for getting list of 10 gifs from giphy
 	function getGifs() {
 
+		//fun API stuff
 		var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + dataName +
 		"&api_key=" + APIKey + "&limit=10";
-
 		$.ajax({
 			url: queryURL,
 			method: "GET"
@@ -77,52 +94,46 @@ $( document ).ready(function() {
 				storePic.attr("data-still", staticSrc);
 				storePic.attr("data-animate", animateSrc);
 				storeGif.append(storePic);
+
+				//animates gif on click, stops animation on another click
+				$(storePic).on("click", function(event) {
+
+					currentState = $(this).attr("gif-state");
+					if (currentState == "still") {
+						$(this).attr("src", $(this).data("animate"));
+						$(this).attr("gif-state", "animate");
+					}
+					else {
+						$(this).attr("src", $(this).data("still"));
+						$(this).attr("gif-state", "still");
+					}
+				})
 				
 				//adds all this to the box that holds gifs
 				$("#hold-gifs").append(storeGif);
-			}
-			
+			}		
 		})
-		
-
 	}
 
+	//makes buttons on screen load
 	makeButton();
 
 	//add new button if the user types input and clicks "Add Category"
 	$("#add-gif").on("click", function() {
+		
+		//clears button list on screen
 		$("#hold-buttons").html("");
+
+		//pulls user input from box
 		storeInput = $("#gif-input").val().trim();
+
+		//adds input to array of buttons
 		topics.push(storeInput);
-		console.log(topics);
+
+		//generates new buttons
 		makeButton();
+
+		//clears input box
 		$("#gif-input").val(null);
 	})
-
-	//execute if a button for gif category is clicked
-	$(".gif-button").on("click", function(event) {
-
-		//clears gif holder box of previous gifs
-		$("#hold-gifs").html("");
-
-		//stores id of button clicked
-		dataName = $(this).attr("data-name");
-		console.log(dataName);
-
-		getGifs();
-	})
-
-	$(".gif-image").on("click", function(event) {
-
-		currentState = $(this).attr("gif-state");
-		if (currentState == "still") {
-			$(this).attr("src", $(this).data("animate"));
-			$(this).attr("gif-state", "animate");
-		}
-		else {
-			$(this).attr("src", $(this).data("still"));
-			$(this).attr("gif-state", "still");
-		}
-	})
-
 })
