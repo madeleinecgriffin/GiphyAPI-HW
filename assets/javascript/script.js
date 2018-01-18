@@ -57,7 +57,7 @@ $( document ).ready(function() {
 	function getGifs() {
 
 		//fun API stuff
-		var queryURL = "http://api.giphy.com/v1/gifs/search?q=" + dataName +
+		var queryURL = "https://api.giphy.com/v1/gifs/search?q=" + dataName +
 		"&api_key=" + APIKey + "&limit=10";
 		$.ajax({
 			url: queryURL,
